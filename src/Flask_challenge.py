@@ -37,29 +37,39 @@ def add_dict():
         status = 201
     )
 
-@app.route('/update/<did>', methods=['PUT'])
+@app.route('/update/<did>', methods=['PUT', 'DELETE'])
 def update_dict(did):
-    req_data = request.get_json()
-    n_id = req_data.get('a_id')
-    dog = req_data.get('dog')
-    name = req_data.get('name')
-    for i in Dictionary:
-        if i['a_id'] == int(did):
-            i['a_id'] = n_id
-            i['dog'] = dog
-            i['name'] = name
-            return jsonify(i)
+    if request.method == 'PUT':
+        req_data = request.get_json()
+        n_id = req_data.get('a_id')
+        dog = req_data.get('dog')
+        name = req_data.get('name')
+        for i in Dictionary:
+            if i['a_id'] == int(did):
+                i['a_id'] = n_id
+                i['dog'] = dog
+                i['name'] = name
+                return jsonify(i)
+    elif request.method == 'DELETE':
+        for i in Dictionary:
+            if i['a_id'] == int(did):
+                ind = Dictionary.index(i)
+                del Dictionary[ind]
+                return Response(
+                    mimetype='application/json',
+                    status= 200
+                )
 
-@app.route('/delete/<did>', methods=['DELETE']) 
-def del_dict(did):
-    for i in Dictionary:
-        if i['a_id'] == int(did):
-            ind = Dictionary.index(i)
-            del Dictionary[ind]
-            return Response(
-                mimetype='application/json',
-                status= 200
-            )
+# @app.route('/delete/<did>', methods=['DELETE']) 
+# def del_dict(did):
+#     for i in Dictionary:
+#         if i['a_id'] == int(did):
+#             ind = Dictionary.index(i)
+#             del Dictionary[ind]
+#             return Response(
+#                 mimetype='application/json',
+#                 status= 200
+#             )
 
 
 if __name__ == '__main__':
