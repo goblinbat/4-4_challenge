@@ -37,7 +37,7 @@ def add_dict():
         status = 201
     )
 
-@app.route('/update/<did>', methods=['PUT', 'DELETE'])
+@app.route('/update/<int:did>', methods=['PUT', 'DELETE'])
 def update_dict(did):
     if request.method == 'PUT':
         req_data = request.get_json()
@@ -45,7 +45,7 @@ def update_dict(did):
         dog = req_data.get('dog')
         name = req_data.get('name')
         for i in Dictionary:
-            if i['a_id'] == int(did):
+            if i['a_id'] == did:
                 i['a_id'] = n_id
                 i['dog'] = dog
                 i['name'] = name
